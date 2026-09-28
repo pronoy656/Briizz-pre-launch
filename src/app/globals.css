@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/* ─── DESIGN TOKENS ─────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --bg: #050505;
+    --red: #e8161e;
+    --red-deep: #8f0007;
+    --red-glow: rgba(232, 22, 30, 0.4);
+    --red-faint: rgba(232, 22, 30, 0.1);
+    --white: #f4f4f7;
+    --muted: #6b6b72;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    background-color: var(--bg);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--white);
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    user-select: none;
+  }
+}
+
+/* ─── SCROLLBAR ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #080808; }
+::-webkit-scrollbar-thumb { background: #2a0007; }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+/* ─── CINEMATIC SCANLINES ───────────────────────────────────────────── */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  pointer-events: none;
+}
+
+/* ─── VIGNETTE ──────────────────────────────────────────────────────── */
+.vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 38%,
+    rgba(5, 5, 5, 0.72) 72%,
+    rgba(5, 5, 5, 0.97) 100%
+  );
+  pointer-events: none;
+}
+
+/* ─── GRAIN TEXTURE ─────────────────────────────────────────────────── */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── KEYFRAMES ─────────────────────────────────────────────────────── */
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes rotateSlowRev {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1);    opacity: 0.82; }
+  50%       { transform: scale(1.04); opacity: 1; }
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes scanBeam {
+  0%   { transform: translateX(-120%); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateX(120vw);  opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+/* ─── UTILITIES ─────────────────────────────────────────────────────── */
+.animate-rotate-slow     { animation: rotateSlow    38s linear infinite; }
+.animate-rotate-slow-rev { animation: rotateSlowRev 28s linear infinite; }
+.animate-breathe         { animation: breathe 4.5s ease-in-out infinite; }
+.animate-float           { animation: floatY  6s ease-in-out infinite; }
+
+.text-display {
+  font-family: var(--font-syne), "Syne", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.text-mono {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+}
+
+/* Glowing red gradient text */
+.text-red-glow {
+  color: transparent;
+  background: linear-gradient(135deg, #e8161e 0%, #ff4d55 50%, #ffffff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  filter: drop-shadow(0 0 18px rgba(232, 22, 30, 0.45));
+}
+
+/* Character image overlay blend */
+.char-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 70%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 70%,
+    transparent 100%
+  );
+}
+
+/* Red horizontal accent line */
+.red-hr {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+
+/* Focus ring */
+*:focus-visible {
+  outline: 1.5px solid var(--red);
+  outline-offset: 3px;
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--red);
+  color: #fff;
+}
